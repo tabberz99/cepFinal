@@ -1,0 +1,81 @@
+{% extends 'tabapp/base.html' %}
+{% block title %}{{activity_name}}{% endblock %}
+{% block body_block %}
+
+<div class="col-xs-12" align="center">
+  <h1>Debate!</h1>
+  <h2>Winner: <i id="lead"></i></h2>
+  <div class="col-xs-6" align="center">
+    <h3>First Proposition</h3>
+    <p>Score: <i id="score1P">0</i></p>
+    <input type="number" id="1Pedit" min="1">
+    <button onclick="setScore('score1P','1Pedit')">Set</button>
+    <h3>Second Proposition</h3>
+    <p>Score: <i id="score2P">0</i></p>
+    <input type="number" id="2Pedit" min="1">
+    <button onclick="setScore('score2P','2Pedit')">Set</button>
+    <h3>Third Proposition</h3>
+    <p>Score: <i id="score3P">0</i></p>
+    <input type="number" id="3Pedit" min="1">
+    <button onclick="setScore('score3P','3Pedit')">Set</button>
+    <h3>Proposition Reply</h3>
+    <p>Score: <i id="score4P">0</i></p>
+    <input type="number" id="4Pedit" min="1">
+    <button onclick="setScore('score4P','4Pedit')">Set</button>
+    <h3>Proposition Total</h3>
+    <p>Score: <i id="scoreTP">0</i></p>
+  </div>
+  <div class="col-xs-6" align="center">
+    <h3>First Opposition</h3>
+    <p>Score: <i id="score1O">0</i></p>
+    <input type="number" id="1Oedit" min="1">
+    <button onclick="setScore('score1O','1Oedit')">Set</button>
+    <h3>Second Opposition</h3>
+    <p>Score: <i id="score2O">0</i></p>
+    <input type="number" id="2Oedit" min="1">
+    <button onclick="setScore('score2O','2Oedit')">Set</button>
+    <h3>Third Opposition</h3>
+    <p>Score: <i id="score3O">0</i></p>
+    <input type="number" id="3Oedit" min="1">
+    <button onclick="setScore('score3O','3Oedit')">Set</button>
+    <h3>Opposition Reply</h3>
+    <p>Score: <i id="score4O">0</i></p>
+    <input type="number" id="4Oedit" min="1">
+    <button onclick="setScore('score4O','4Oedit')">Set</button>
+    <h3>Opposition Total</h3>
+    <p>Score: <i id="scoreTO">0</i></p>
+  </div>
+  <p align="left"><a class="btn btn-default btn-success" href="/thetab/">Back to activities list</a></p>
+</div>
+
+<script>
+  var scoreTP;
+  var scoreTO;
+  function hello(){
+    alert("Hello world, at last.");
+  }
+  function setScore(target,newvalue){
+      document.getElementById(target).innerHTML=parseInt(document.getElementById(newvalue).value);
+      document.getElementById(newvalue).value=null;
+      leader();
+  }
+  function leader() {
+    var totalP = parseInt(document.getElementById("score1P").innerHTML) + parseInt(document.getElementById("score2P").innerHTML) + parseInt(document.getElementById("score3P").innerHTML) + parseInt(document.getElementById("score4P").innerHTML);
+    var totalO = parseInt(document.getElementById("score1O").innerHTML) + parseInt(document.getElementById("score2O").innerHTML) + parseInt(document.getElementById("score3O").innerHTML) + parseInt(document.getElementById("score4O").innerHTML);
+    document.getElementById("scoreTP").innerHTML=totalP;
+    document.getElementById("scoreTO").innerHTML=totalO;
+    if (parseInt(totalP) > parseInt(totalO)) {
+      document.getElementById("lead").innerHTML = "Proposition";
+    }
+    else if (parseInt(totalO) > parseInt(totalP)) {
+      document.getElementById("lead").innerHTML = "Opposition";
+    }
+    else{
+      document.getElementById("lead").innerHTML = "Tied!";
+    }
+  }
+  
+</script>
+
+
+{%endblock%}

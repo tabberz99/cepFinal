@@ -1,0 +1,13 @@
+{% extends 'tabapp/base.html' %}
+{% block body_block %}
+
+  <div>
+    {% if deleted %}
+      <p><b>You have successfully deleted the "{{ del_name }}" template.</b></p>
+      <p><a class="btn btn-default btn-success" href="/thetab/">Return Home</a></p>
+    {% else %}
+      <b>Such a template does not exist! Please try again</b>
+      <p><a class="btn btn-default btn-success" href="/thetab/">Return Home</a></p>
+      {% endif %}
+  </div>
+{% endblock %}

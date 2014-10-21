@@ -1,0 +1,26 @@
+{% extends 'tabapp/base.html' %}
+{% load newfilters %}
+{% block body_block %}
+
+{% if registered %}
+  <p><strong>Thank you for registering.</strong></p>
+  <p><a class="btn btn-default btn-success" href="/thetab/">Home</a></p>
+{% else %}
+  <h2>Please register.</h2><br />
+  <form role="form" id="user_form" method="post" action="/thetab/register/" enctype="multipart/form-data">
+  {% csrf_token %}    
+  {% for field in user_form.visible_fields %}
+    <div>
+      <label>{{ field.label }}</label>
+      {{ field|addcss:"class:form-control" }}            
+    </div>
+    <br />
+    {{ field.errors }}
+  {% endfor %}
+    
+  <!-- Provide a button to submit the form. -->
+    <br /><button class="btn btn-primary" type="submit" name="Register" value="Register">Register</button>
+          
+        </form>
+        {% endif %}
+{% endblock %}

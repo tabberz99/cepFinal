@@ -1,0 +1,30 @@
+{% extends 'tabapp/base.html' %}
+{% load newfilters %}
+{% block body_block %}
+
+  {% if created %}
+    <p><strong>You have successfully created a template.</strong></p>
+    <p><a class="btn btn-default btn-success" href="/thetab/">Home</a></p>
+  {% else %}
+    <h2>Create a custom template.</h2><br />
+    <form role="form" id="user_form" method="post" action="/thetab/customact/" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in activity_form.visible_fields %}
+      <div>
+        <p><label>{{ field.label }}</label></p>
+        {{ field|addcss:"class:form-control" }}
+      <br />
+      {{ field.errors }}
+    {% endfor %}
+      <br />
+      </div>
+      <div>
+        <div class="btn-group">
+          <a href="/thetab/customvar" class="btn btn-default btn-warning">Add a new Variable</a>
+          <a href="/thetab/customtm" class="btn btn-default btn-warning">Add a new Team</a>
+        <button class="btn btn-primary" type="submit" name="Create Activity" value="Create">Create Activity</button>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+{% endblock %}

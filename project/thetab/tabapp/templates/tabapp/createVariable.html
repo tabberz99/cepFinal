@@ -1,0 +1,23 @@
+{% extends 'tabapp/base.html' %}
+{% load newfilters %}
+{% block body_block %}
+
+  {% if created %}
+    <strong>You have successfully created a new variable! Check it out back at the custom form.</strong>
+    <a class="btn btn-default btn-success" href="/thetab/customact/">Back to custom form</a><br />
+  {% else %}
+    <h2>Create a custom variable.</h2><br />
+    <form role="form" id="user_form" method="post" action="/thetab/customvar/" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in variable_form.visible_fields %}
+      <div>
+        <p><label>{{ field.label }}</label>
+          {{ field |addcss:"class:form-control" }}</p>   
+      </div>
+      {{ field.errors }}
+    {% endfor %}
+      <br />
+      <button class="btn btn-primary" type="submit" name="Create Variable" value="Create">Create</button>
+    </form>
+  {% endif %}
+{% endblock %}

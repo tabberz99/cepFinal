@@ -1,0 +1,60 @@
+{% extends 'tabapp/base.html' %}
+{% block title %}Cookie Eating{% endblock %}
+{% block body_block%}
+
+  <div class="col-xs-12" align="center">
+    <h1>Cookie Eating Contest!</h1>
+    
+    <h2>LEADING: <i id="lead"></i></h2>
+    
+    <div class="col-xs-6" align="center">
+      <h3>Participant A</h3>
+      <p>Score: <i id="scoreA">0</i></p>
+      <button onclick="addScore(scoreA,1)">+</button>
+      <button onclick="addScore(scoreA,-1)">-</button>
+    </div>
+    
+    <div class="col-xs-6" align="center">
+      <h3>Participant B</h3>
+      <p>Score: <i id="scoreB">0</i></p>
+      <button onclick="addScore(scoreB,1)">+</button>
+      <button onclick="addScore(scoreB,-1)">-</button>
+    </div>
+    
+  </div>
+
+  <div>
+    <a class="btn btn-default btn-success" href="/thetab/">Back to activities list</a>
+  </div>
+
+  <script>
+    var scoreB = "scoreB";
+    var scoreA = "scoreA";
+    
+    function addScore(elemName,value) {
+        var display = document.getElementById(elemName).innerHTML;
+        var i = parseInt(display);
+        i += value;
+        if (i < 0) {
+          i = 0;
+        }
+        document.getElementById(elemName).innerHTML = i.toString();
+    }
+    
+    function leader() {
+        var xa = document.getElementById("scoreA").innerHTML;
+        var scorea = parseInt(xa);
+        var xb = document.getElementById("scoreB").innerHTML;
+        var scoreb = parseInt(xb);
+        if (scorea > scoreb) {
+            document.getElementById("lead").innerHTML = "Participant A";
+        } else if (scorea < scoreb) {
+            document.getElementById("lead").innerHTML = "Participant B";
+        } else {
+            document.getElementById("lead").innerHTML = "Tied!";
+        }
+    }
+    window.setInterval(leader, 100)
+  </script>
+
+{%endblock%}

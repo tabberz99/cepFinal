@@ -1,0 +1,73 @@
+f{% extends 'tabapp/base.html' %}
+{% block body_block %}
+
+  <div id="intro-carousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#intro-carousel" data-slide-to="0" class="active"></li>
+      <li data-target="#intro-carousel" data-slide-to="1"></li>
+      <li data-target="#intro-carousel" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <div class="item active">
+        <img src="http://4.bp.blogspot.com/_aD0xNXVRWY0/S8c97I7a5kI/AAAAAAAAADI/le_MPO1fLTg/s1600/DSC-4.jpg">
+      </div>
+      
+      <div class="item">
+        <img src="http://cdn.3news.co.nz/3news/AM/0-Articles/233010/tvnz-debate.jpg">
+      </div>
+      
+      <div class="item">
+        <img src="http://d.ibtimes.co.uk/en/full/1387856/hot-dog-eating-contest.jpg">
+      </div>
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#intro-carousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#intro-carousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+   </div>
+  <div>
+    {% if not user.is_authenticated %}
+    <h1>Welcome to The Tab.</h1>
+    {% elif activities %}
+    <h2 align="center">Activities</h2>
+    <div class="col-xs-6">
+      <h2>Custom Templates</h2>
+      <ul class="list-group">
+        {% for activity in activities %}
+        <li class="list-group-item list-group-item-info"><a href="/thetab/customdel/{{ activity.url }}"><img src="http://www.clker.com/cliparts/a/x/q/L/G/9/delete-icon-md.png" height="20" width="20"></a><i>  </i>
+        <a href="/thetab/custom/{{ activity.url }}">{{ activity.formname }}</a></li>
+        {% endfor %}
+        <br/>
+        <p><a href="/thetab/customact/" class="btn btn-default btn-warning">Add a New Template</a></p>
+      </ul>
+    </div>
+    {% else %}
+    <br />
+    <div class="col-xs-6">
+        <strong>You have no custom activities</strong>
+        <p><a href="/thetab/customact/" class="btn btn-default btn-warning">Add a New Template</a></p>
+    </div>
+    {% endif %}
+    
+    <div class="col-xs-6">
+      <h2>Prepared Templates</h2>
+        <ul class="list-group">
+          <a href="/thetab/Cookie_Eating" class="list-group-item list-group-item-success">Cookie Eating Contest</a>
+          <a href="/thetab/Swimming" class="list-group-item list-group-item-success">Swimming Competition</a>
+          <a href="/thetab/Debate" class="list-group-item list-group-item-success">Debate Competition</a>
+          <!--<li><a href="/thetab/Cookie_Eating">Cookie Eating Contest</a></li>-->
+        </ul>
+    </div>
+  </div>
+  <script>
+    function lolclick(lolword){//Debugging tool. May be deleted.
+      alert(lolword.toString());
+    }
+  </script>
+{% endblock %}

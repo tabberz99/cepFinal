@@ -1,0 +1,215 @@
+{% extends 'tabapp/base.html' %}
+{% block title %}Cookie Eating{% endblock %}
+{% block body_block%}
+<!--STUFF TO DO: Clear Winner on reset-->
+  <div class="col-xs-12" align="center">
+    <h1>Swimming Competition!</h1>
+    
+    <div align="center">
+    <h2>Timer: <i id="min">00</i> : <i id="sec">00</i> : <i id="msec">00</i> </h2>
+    <button onclick="start()">START</button>
+    <button onclick="stop()">STOP</button>
+    <button onclick="reset()">RESET</button>
+    
+    <h3>Winner: <i id="win"></i></h3>
+    </div>
+    
+    <div class="col-xs-6" align="center">
+    <h4>Swimmer A</h4>
+    <p>Lap timer: <i id="lmin">00</i> : <i id="lsec">00</i> : <i id="lmsec">00</i> </p>
+    <p>Final Time: <i id="timeA">0</i></p>
+    <button onclick="lap(lm,ls,lms,lapsA,divA)">Lap</button>
+    <button onclick="clearLaps(lapsA, divA)">Clear Laps</button>
+    <button onclick="finishA()">Finish</button>
+    <div id="lapListA"></div>
+    </div>
+    
+    <div class="col-xs-6" align="center">
+    <h4>Swimmer B</h4>
+    <p>Lap timer: <i id="lmin2">00</i> : <i id="lsec2">00</i> : <i id="lmsec2">00</i> </p>
+    <p>Final Time: <i id="timeB">0</i></p>
+    <button onclick="lap(lm2,ls2,lms2,lapsB, divB)">Lap</button>
+    <button onclick="clearLaps(lapsB, divB)">Clear Laps</button>
+    <button onclick="finishB()">Finish</button>
+    <div id="lapListB"></div>
+    </div>
+  </div>
+
+  <div>
+    <a class="btn btn-default btn-success" href="/thetab/">Back to activities list</a>
+  </div>
+
+  <script>
+    var racewon = false;
+    //----MAIN TIMER----//
+    var timing = 0; // 0 - not started, 1 - started
+    var m = "min";
+    var s = "sec";
+    var ms = "msec";
+    var intv;
+    //----Swimmer A----//
+    var lm = "lmin";
+    var ls = "lsec";
+    var lms = "lmsec";
+    var intv2;
+    var lapsA = [];
+    var divA = "lapListA";
+    var fTmA = "timeA";
+    var finA = false;
+    var dateStampA;
+    //----Swimmer B----//
+    var lm2 = "lmin2";
+    var ls2 = "lsec2";
+    var lms2 = "lmsec2";
+    var intv3;
+    var lapsB = [];
+    var divB = "lapListB";
+    var fTmB = "timeB";
+    var finB = false;
+    var dateStampB;
+    
+    
+    function winner(champion) {
+      if(!racewon){
+        document.getElementById("win").innerHTML = champion;
+        racewon = true;
+      }
+    }
+    
+    function check(i) {
+        if (i < 10) {i = "0" + i};
+        return i;
+    }
+    
+    function start() {
+        if (timing == 0) {
+            timing = 1;
+            intv = setInterval(function() {timer2(m, s, ms)}, 10);
+            intv2 = setInterval(function() {timer2(lm, ls, lms)}, 10);
+            intv3 = setInterval(function() {timer2(lm2, ls2, lms2)}, 10);
+        } else if (timing == 1) {
+            //#DoNothing
+        }
+    }
+    
+    function stop() {
+        clearInterval(intv);
+        clearInterval(intv2);
+        clearInterval(intv3);
+        timing = 0;
+    }
+    
+    function reset() {
+        if (timing == 1) {
+            stop();
+            timing = 0;
+        } else if (timing == 0) {
+            var check = confirm("Resetting will delete the final timings of swimmers and clear all laps. Do you wish to proceed?");
+            if (check) {
+               document.getElementById("min").innerHTML = "00";
+               document.getElementById("sec").innerHTML = "00";
+               document.getElementById("msec").innerHTML = "00";
+               //-------------------LAP TIMER A-----------------//
+               document.getElementById("lmin").innerHTML = "00";
+               document.getElementById("lsec").innerHTML = "00";
+               document.getElementById("lmsec").innerHTML = "00";
+               document.getElementById("timeA").innerHTML = "0";
+               clearLaps(lapsA, divA);
+               //-------------------LAP TIMER B-----------------//
+               document.getElementById("lmin2").innerHTML = "00";
+               document.getElementById("lsec2").innerHTML = "00";
+               document.getElementById("lmsec2").innerHTML = "00";
+               document.getElementById("timeB").innerHTML = "0";
+               clearLaps(lapsB, divB);
+               //---------------------WINNER--------------------//
+               document.getElementById("win").innerHTML = "";
+               dateStampA = 0;
+               dateStampB = 0;
+            } else if (!check){
+               //#DoNothing
+            }
+            
+        }
+    }
+    
+    function timer2(min, sec, msec) {
+        var m = parseInt(document.getElementById(min).innerHTML);
+        var s = parseInt(document.getElementById(sec).innerHTML);
+        var ms = parseInt(document.getElementById(msec).innerHTML);
+        
+        ms += 1;
+      
+        if (ms == 100) { 
+            ms = 0;
+            s += 1;
+        }
+        
+        if (s == 60) {
+            s = 0;
+            m += 1;
+        }
+      
+        m = check(m);
+        s = check(s);
+        ms = check(ms);
+        
+        document.getElementById(min).innerHTML = m.toString();
+        document.getElementById(sec).innerHTML = s.toString();
+        document.getElementById(msec).innerHTML = ms.toString();
+    }
+    
+    function lap(lm, ls, lms, arrName, divName) {
+        if (timing == 1) { 
+            var m = document.getElementById(lm).innerHTML;
+            var s = document.getElementById(ls).innerHTML;
+            var ms = document.getElementById(lms).innerHTML;
+            var inNo = parseInt([arrName.length]) + 1;
+            var tm = inNo + ". " + m + ":" + s + ":" + ms;
+            arrName[arrName.length] = tm;
+            var x = document.createElement("P");
+            var t = document.createTextNode(tm + "\n");
+            x.appendChild(t);
+            document.getElementById(divName).appendChild(x);
+            //-----------------reset LT--------------------//
+            document.getElementById(lm).innerHTML = "00";
+            document.getElementById(ls).innerHTML = "00";
+            document.getElementById(lms).innerHTML = "00";
+        } else if (timing == 0) {
+            alert("The timer is not running!");
+        }
+    }
+    
+    function clearLaps(arrName, divName) {
+        arrName.length = 0;
+        document.getElementById(divName).innerHTML = "";
+    }
+    
+    function record(elemName, doneVar) {
+        if (!doneVar){
+            var m = document.getElementById("min").innerHTML;
+            var s = document.getElementById("sec").innerHTML;
+            var ms = document.getElementById("msec").innerHTML;
+            var tm = m + ":" + s + ":" + ms;
+            document.getElementById(elemName).innerHTML = tm;
+        } else if (doneVar) {
+            alert("Swimmer has already finished the race!");
+            //#DoNothing
+        }
+    }    
+    
+    function finishA () {
+        record(fTmA,finA);
+        finA = true;
+        dateStampA = new Date();
+        winner("Swimmer A")
+    }
+    
+    function finishB () {
+        record(fTmB,finB);
+        finB = true;
+        dateStampB = new Date();
+        winner("Swimmer B")
+    }
+  </script>
+
+{%endblock%}

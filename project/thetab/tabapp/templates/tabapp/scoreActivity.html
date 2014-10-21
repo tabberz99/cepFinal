@@ -1,0 +1,19 @@
+{% extends 'tabapp/base.html' %}
+{% block title %}{{ activity_name }}{% endblock %}
+{% block body_block %}
+
+  <div class="col-xs-5">
+    <h2>{{  activity_name  }}</h2>
+    {% if variables %}
+      <ul>
+        {% for variable in variables %}
+        <!--<li><a href="/thetab/activity/{{ activity.url }}">{{ activity }}</a></li>-->
+        <li>{{  variable  }}</li>
+        {% endfor %}
+      </ul>
+    <!--{% else %}
+      <strong>You have no activities</strong>-->
+    {% endif %}
+  </div>
+
+{% endblock %}

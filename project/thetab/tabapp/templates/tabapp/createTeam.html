@@ -1,0 +1,22 @@
+{% extends 'tabapp/base.html' %}
+{% load newfilters %}
+{% block body_block %}
+
+  {% if created %}
+    <strong>You have successfully created a new team! Check it out back at the custom form.</strong>
+    <p><a class="btn btn-default btn-success" class="btn btn-success" href="/thetab/customact/">Back to custom form</a></p><br />
+  {% else %}
+    <h2>Create a custom team name.</h2><br />
+    <form role="form" id="tm_form" method="post" action="/thetab/customtm/" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in tmName_form.visible_fields %}
+      <div>
+        <p><label>{{ field.label }}</label>
+          {{ field|addcss:"class:form-control" }}</p>
+      </div>
+      {{ field.errors }}
+    {% endfor %}
+      <button class="btn btn-primary" type="submit" name="Create Team" value="Create">Create</button>
+    </form>
+  {% endif %}
+{% endblock %}
