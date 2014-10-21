@@ -10,11 +10,10 @@
           <button onclick="start()">START</button>
           <button onclick="stop()">STOP</button>
           <button onclick="reset()">RESET</button>
-          <br />
+          <br /><br />
         </div>
       {% endif %}
       {% for name in act.groupNames.all %}
-      <br />
       <div class="col-xs-6 panel panel-default" align="center">
         <div class="panel-heading">{{ name }}</div>
         <div class="input-group panel-body">
@@ -68,13 +67,11 @@
   
     function start() {
       if (!timing) {
-        alert ("Timer not on");
         timing = true;
-        alert (timing);
         intv = setInterval(function(){timer2("min", "sec", "msec")}, 10);
       } 
       else if (timing) {
-        alert("Here!");
+        //#DoNothing
       }
     }
     
